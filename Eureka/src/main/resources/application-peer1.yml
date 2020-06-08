@@ -1,0 +1,9 @@
+server:
+  port: 8001
+
+eureka:
+  instance:
+    hostname: peer1
+  client:
+    serviceUrl:
+      defaultZone: http://mydal:1234@peer2:8002/eureka/

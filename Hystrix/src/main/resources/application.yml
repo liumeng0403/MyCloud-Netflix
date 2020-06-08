@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: mycloud-hystrix
+
+server:
+  port: 8301
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+turbine:
+  appConfig: mycloud-gateway,service-c,service-b
+  clusterNameExpression: new String("default")
+  aggregator:
+    clusterConfig: default
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: http://mydal:1234@peer1:8001/eureka/,http://mydal:1234@peer2:8002/eureka/

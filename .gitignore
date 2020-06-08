@@ -1,0 +1,10 @@
+/.idea/
+*.class
+/Eureka/target/
+/ServiceA/target/
+/ServiceB/target/
+/Hystrix/target/
+/Config/target/
+/Zipkin/target/
+/ServiceC/target/
+/Gateway/target/

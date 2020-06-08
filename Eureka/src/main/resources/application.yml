@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: mycloud-eureka
+  security:
+    user:
+      name: mydal
+      password: 1234
+
+eureka:
+  instance:
+    prefer-ip-address: false
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    registerWithEureka: true
+    fetch-registry: true

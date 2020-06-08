@@ -1,0 +1,43 @@
+:::MyCloud:
+    root
+80:Eureka: -- mycloud-eureka / mycloud-config / mycloud-hystrix / mycloud-zipkin / service-a / service-b /
+    注册/发现 中心
+        http://peer1:8001/eureka/
+        http://peer2:8002/eureka/
+        访问 http://localhost:8001/
+             http://localhost:8001/login  mydal 1234
+86:Gateway:
+    网关 -- service-c / FineUI
+        8601
+        访问 http://localhost:8601/web/hello
+            http://localhost:8601/test/full/all
+83:Hystrix:
+    熔断检查聚合 -- mycloud-gateway / service-c / service-b
+        8301
+        访问 http://localhost:8301/hystrix
+             http://localhost:8301/turbine.stream
+84:Config
+    配置中心  -- service-b
+        8401
+        8402
+        访问 http://localhost:8401/mydal/dev
+             curl -X POST http://localhost:8401/actuator/bus-refresh
+94:Zipkin
+    链路跟踪 -- service-a / service-b
+        9411
+        java -jar zipkin-server.jar
+        访问 http://localhost:9411/zipkin/
+81:ServiceA:
+    DB操作层 -- mysql
+        8101
+        8102
+82:ServiceB:
+    业务组装层 -- service-a
+        8201
+        8202
+        访问 http://localhost:8201/configTest
+87:ServiceC:
+    web 页面 -- service-b
+        8701
+        8702
+        访问 http://localhost:8701/hello

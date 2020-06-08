@@ -1,0 +1,3 @@
+Zipkin的服务端已经打包成了一个 jar，
+使用 java -jar zipkin-server.jar 启动，
+访问 localhost:9411 查看zipkin主页

@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    bus:
+      trace:
+        enabled: true
+    config:
+      label: master
+      name: mydal
+      profile: dev
+      discovery:
+        enabled: true
+        serviceId: mycloud-config
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: http://mydal:1234@peer1:8001/eureka/,http://mydal:1234@peer2:8002/eureka/
