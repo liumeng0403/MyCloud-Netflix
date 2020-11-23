@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: netflix-hystrix
+
+server:
+  port: 8301
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+turbine:
+  app-config: spring-gateway,service-c,service-b,service-a
+  cluster-name-expression: new String("default")
+  combine-host-port: true
+  aggregator:
+    cluster-config: default
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 5
+    lease-renewal-interval-in-seconds: 3
+  client:
+    serviceUrl:
+      defaultZone: http://mydal:1234@peer1:8001/eureka/,http://mydal:1234@peer2:8002/eureka/
+    registry-fetch-interval-seconds: 5

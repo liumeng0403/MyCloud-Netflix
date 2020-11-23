@@ -1,0 +1,59 @@
+spring:
+  rabbitmq:
+    host: 192.168.89.5
+    port: 5672
+    username: lm
+    password: 2018
+  application:
+    name: service-b
+  sleuth:
+    web:
+      enabled: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: http://peer1:9411
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: peer1:9300
+
+jwn:
+  elk:
+    prefix: jwnlog-
+    save-days: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+feign:
+  httpclient:
+    enabled: true
+  okhttp:
+    enabled: false
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
+  hystrix:
+    enabled: true
+
+hystrix:
+  metrics:
+    enabled: true
+#  command:
+#    default:
+#      execution:
+#        timeout:
+#          enabled: true
+#        isolation:
+#          strategy: SEMAPHORE
+#          thread:
+#            timeoutInMilliseconds: 5000
+  shareSecurityContext: true

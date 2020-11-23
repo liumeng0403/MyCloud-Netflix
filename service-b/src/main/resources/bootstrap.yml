@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    bus:
+      trace:
+        enabled: true
+    config:
+      label: master
+      name: mydal
+      profile: dev
+      discovery:
+        enabled: true
+        serviceId: spring-config
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 5
+    lease-renewal-interval-in-seconds: 3
+  client:
+    serviceUrl:
+      defaultZone: http://mydal:1234@peer1:8001/eureka/,http://mydal:1234@peer2:8002/eureka/
+    registry-fetch-interval-seconds: 5

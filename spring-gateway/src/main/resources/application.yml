@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: spring-gateway
+  sleuth:
+    web:
+      enabled: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: http://peer1:9411
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: sc_1
+          uri: lb://service-c
+          predicates:
+            - Path=/html/**
+          filters:
+            - StripPrefix=1
+        - id: sc_2
+          uri: lb://service-c
+          predicates:
+            - Path=/api/**
+          filters:
+            - StripPrefix=1
+      default-filters:
+        - name: Hystrix
+          args:
+            name: default
+            fallbackUri: "forward:/gatewayFallback"
+
+
+server:
+  port: 8601
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 5
+    lease-renewal-interval-in-seconds: 3
+  client:
+    serviceUrl:
+      defaultZone: http://mydal:1234@peer1:8001/eureka/,http://mydal:1234@peer2:8002/eureka/
+    registry-fetch-interval-seconds: 5
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 5000
+  shareSecurityContext: true

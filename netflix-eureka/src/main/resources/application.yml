@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: netflix-eureka
+  security:
+    user:
+      name: mydal
+      password: 1234
+
+eureka:
+  server:
+    enableSelfPreservation: false
+    eviction-interval-timer-in-ms: 1000
+  instance:
+    prefer-ip-address: false
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    registerWithEureka: true
+    fetch-registry: true

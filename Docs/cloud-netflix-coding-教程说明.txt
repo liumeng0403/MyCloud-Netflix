@@ -1,0 +1,91 @@
+:::cloud-netflix:
+    parent
+
+本机 host:
+    # 主用
+        127.0.0.1 peer1
+        127.0.0.1 peer2
+    # 备用
+        127.0.0.1 peer3
+
+80:netflix-eureka:
+    注册/发现 中心
+        http://peer1:8001/eureka/
+        http://peer2:8002/eureka/
+        访问 http://peer1:8001/
+             mydal / 1234
+
+94:zipkin
+    链路跟踪
+        9411
+        现在 Zipkin 的服务端已经打包成了一个 jar 包了
+        cd C:\Users\liume\Desktop\行员coding计划\cloud-netflix\zipkin
+        java -jar zipkin-server.jar
+        访问 http://peer1:9411/zipkin/
+
+33:mysql
+    vm-cent7-01
+        mysql db , 需自己创建一个
+
+81:service-a:
+    假如是一个 db / redis 操作服务
+        8101
+        8102
+        访问    http://peer1:8101/ahello?name=mydal
+                http://peer1:8101/aDbData
+
+56:rabbit-mq
+    vm-cent7-02
+        rabbit-mq , 需要自己创建一个
+        /opt/rabbitMq/rabbit/rabbitmq_server-3.7.15/sbin/rabbitmq-server -detached
+        访问  http://192.168.89.5:15672
+              lm / 2018
+
+github
+    git server , 需要自己创建一个
+    https://github.com/liumeng0403/configs/blob/master/demo2/mydal-dev.properties
+
+84:spring-config
+    配置中心  -- service-b
+        8401
+        8402
+        访问 http://peer1:8401/mydal/dev
+             curl -X POST http://peer1:8401/actuator/bus-refresh
+
+log
+    cd C:\DevTools\elasticsearch-6.2.2\bin
+    elasticsearch.bat
+    cd C:\DevTools\kibana-6.2.2\bin
+    kibana.bat
+    访问   http://127.0.0.1:5601/
+
+82:service-b:
+    假如是一个 redis / elastic-search / business  操作服务
+        8201
+        8202
+        访问 http://peer1:8201/configTest
+             http://peer1:8201/elkLog
+             http://peer1:8201/bhello/mydal
+             http://peer1:8201/bData
+
+87:service-c:
+    假如是一个 business web 页面及操作服务
+        8701
+        8702
+        访问 http://peer1:8701/data/all
+             http://peer1:8701/chello
+
+86:spring-gateway:
+    网关
+        8601
+        访问   http://peer1:8601/html/chello
+               http://peer1:8601/api/data/all
+
+83:netflix-hystrix:
+    熔断检查聚合 -- mycloud-gateway / service-c / service-b
+        8301
+        访问   http://peer1:8301/hystrix
+                   --  http://peer1:8201/actuator/hystrix.stream
+                   --  http://peer1:8301/turbine.stream
+                   --  http://peer1:8301/turbine.stream?cluster=default
+
